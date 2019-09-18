@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  *
@@ -413,6 +413,11 @@ namespace QuantConnect.Util
             var isHourOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
             var securityType = symbol.ID.SecurityType.SecurityTypeToLower();
             var market = symbol.ID.Market.ToLowerInvariant();
+            if (symbol.ID.SecurityType == SecurityType.Equity)
+            {
+                market = "usa-taq";
+            }
+
             var res = resolution.ResolutionToLower();
             var directory = Path.Combine(securityType, market, res);
             switch (symbol.ID.SecurityType)
@@ -627,7 +632,7 @@ namespace QuantConnect.Util
         /// <returns>The most common tick type for the specified security type</returns>
         public static TickType GetCommonTickType(SecurityType securityType)
         {
-            if (securityType == SecurityType.Forex || securityType == SecurityType.Cfd || securityType == SecurityType.Crypto)
+            if (securityType == SecurityType.Forex || securityType == SecurityType.Cfd || securityType == SecurityType.Crypto || securityType == SecurityType.Equity)
             {
                 return TickType.Quote;
             }
